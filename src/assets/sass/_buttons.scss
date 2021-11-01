@@ -1,0 +1,26 @@
+.btn {
+  padding: 8px 20px;
+  background: #e5e5e5;
+  border-radius: 5px;
+  border: none;
+
+  color: $primary-color;
+
+  font-weight: 600;
+  font-size: 14px;
+  margin: 0;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  span {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+  svg {
+    font-size: 20px !important;
+  }
+}

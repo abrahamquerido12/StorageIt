@@ -1,0 +1,98 @@
+.sidebar {
+  @include display-flex-center(column);
+  text-align: center;
+  padding-top: 10px;
+  background-color: $primary-color;
+  // position: absolute;
+  width: 15%;
+  height: 100vh;
+  // left: 0px;
+  // top: 0px;
+
+  &__btn-container {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+  &__upload-btn {
+    margin-top: 20px;
+    display: flex;
+    width: 120 px;
+  }
+
+  &__nav-links {
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    overflow-x: hidden;
+    margin-top: 20px;
+
+    li {
+      width: 100%;
+      float: left;
+
+      padding-top: 15px;
+      padding: 10px 20px;
+      transition: 0.5s ease;
+
+      a {
+        text-decoration: none;
+        color: white;
+        display: flex;
+        align-items: center;
+      }
+
+      svg {
+        margin-right: 5px;
+      }
+
+      &:hover {
+        cursor: pointer;
+        background-color: $primary-color-hover;
+        transition: 0.5s ease;
+      }
+    }
+  }
+
+  input[type="file"] {
+    display: none;
+  }
+}
+
+.navbar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  .MuiInput-root {
+    flex: 1;
+
+    &::before,
+    &::after {
+      border-bottom: none !important;
+    }
+  }
+  &__options {
+    display: flex;
+    ul {
+      list-style-type: none;
+      display: flex;
+
+      li {
+        margin: 0 5px;
+        transition: 0.5s ease;
+
+        svg {
+          font-size: 20px;
+        }
+        &:hover {
+          cursor: pointer;
+          color: $primary-color;
+          transition: 0.5s ease;
+        }
+      }
+    }
+  }
+  border-bottom: 1px solid #e5e5e5;
+}
