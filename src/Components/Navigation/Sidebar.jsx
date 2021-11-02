@@ -82,7 +82,7 @@ export default function Sidebar({ getFiles }) {
   return (
     <div className="sidebar">
       <img src={Logo} alt="logo" />
-
+      {/*  */}
       <div className="sidebar__btn-container">
         <label className="btn sidebar__upload-btn">
           <input
