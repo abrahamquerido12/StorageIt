@@ -10,8 +10,12 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import PushPinIcon from "@mui/icons-material/PushPin";
 
 import { parse, format } from "exif-date";
+import { db } from "../../../firebase.config";
+import { AuthContext } from "../../../AuthCtx";
+import { doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 
-export default function File({ file }) {
+export default function File({ file, getQuickAccessFiles }) {
+  const { user, getData } = React.useContext(AuthContext);
   const bytesToMegaBytes = (bytes) => bytes / (1024 * 1024);
 
   function formatBytes(bytes, decimals = 2) {
@@ -33,6 +37,16 @@ export default function File({ file }) {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const setAsQuickAccess = async () => {
+    const userRef = doc(db, `users/${user.uid}`);
+    await updateDoc(userRef, {
+      quickAccessFiles: arrayUnion(file.uid),
+    });
+    getData(user.uid);
+    handleClose();
+    // getQuickAccessFiles();
   };
 
   return (
@@ -69,7 +83,7 @@ export default function File({ file }) {
             Descargar
           </a>
         </MenuItem>
-        <MenuItem onClick={handleClose} disableRipple>
+        <MenuItem onClick={setAsQuickAccess} disableRipple>
           <PushPinIcon />
           Anclar a acceso rápido
         </MenuItem>

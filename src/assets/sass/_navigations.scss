@@ -96,3 +96,86 @@
   }
   border-bottom: 1px solid #e5e5e5;
 }
+
+.MuiPaper-elevation,
+header {
+  background-color: white !important;
+
+  svg {
+    color: #52555a;
+  }
+}
+
+.MuiDrawer-paper {
+  background-color: $primary-color !important;
+  svg,
+  span {
+    color: white !important;
+  }
+}
+
+.MuiDivider-root {
+  border-color: #ffffff40 !important;
+}
+
+.searchbox {
+  position: absolute;
+  background: red;
+  top: 65px;
+  // min-height: 200px;
+  height: auto;
+
+  color: black;
+  font: 13px/27px Roboto, RobotoDraft, Arial, sans-serif;
+  white-space: nowrap;
+  background: #f1f3f4;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  width: auto;
+  min-width: 400px;
+  // transition: background 100ms ease-in,width 100ms ease-out;
+  margin-left: 0;
+  margin-right: 0;
+  align-items: center;
+  padding: 10px;
+  &__item {
+    padding: 4px 8px;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.87);
+    margin: 0 1px;
+    min-height: 32px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    &-icon {
+      display: flex;
+      align-items: center;
+    }
+    &-info {
+      display: flex;
+      line-height: 20px;
+      .owner {
+        font-size: 12px;
+      }
+      .data {
+        display: flex;
+        flex-direction: column;
+        line-height: 20px;
+        margin: 0 20px;
+        .owner {
+          font-size: 12px;
+        }
+      }
+    }
+
+    &:hover {
+      cursor: pointer;
+      background-color: #3a5064;
+      color: white;
+
+      svg {
+        color: white;
+      }
+    }
+  }
+}

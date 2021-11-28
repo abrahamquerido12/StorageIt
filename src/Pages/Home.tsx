@@ -1,47 +1,74 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Activity from "../Components/Dashboard/Activity/Activity";
 import QuickAcces from "../Components/Dashboard/QuickAcces/QuickAcces";
 import Recent from "../Components/Dashboard/Recent/Recent";
 import Navbar from "../Components/Navigation/Navbar";
-import Sidebar from "../Components/Navigation/Sidebar.jsx";
-import { collection, doc, getDocs } from "firebase/firestore";
+import { collection, doc, getDocs, query, where } from "firebase/firestore";
 
 import { db } from "../firebase.config";
+import MiniDrawer from "../Components/MaterialUi/SideBar";
+import { AuthContext } from "../AuthCtx";
+import { FilesContext } from "../FilesCtx";
+import DocResultInfo from "../Components/Navigation/DocResultInfo";
 
 export default function Home() {
-  const [files, setFiles] = useState([]);
+  const { user, userData } = useContext(AuthContext);
+  const { files, getFiles } = useContext(FilesContext);
+  const [quickFiles, setQuickFiles] = useState([]);
 
-  const getFiles = async () => {
+  const [selectedFile, setSelectedFile] = React.useState<any>({});
+
+  const [openDocInfo, setOpenDocInfo] = React.useState(false);
+  const handleDocInfoOpen = () => setOpenDocInfo(true);
+
+  const handleSelectedFile = (file) => {
+    setSelectedFile(file);
+
+    setOpenDocInfo(true);
+  };
+
+  const handleDocInfoClose = () => {
+    setSelectedFile({});
+    setOpenDocInfo(false);
+  };
+
+  const getQuickAccessFiles = async () => {
     var files = [];
-    const querySnapshot = await getDocs(collection(db, "files"));
-    console.log(querySnapshot);
 
-    querySnapshot.forEach((doc) => {
-      // doc.data() is never undefined for query doc snapshots
-      console.log(doc.id, " => ", doc.data());
-      files.push({ uid: doc.id, ...doc.data() });
-    });
-
-    setFiles(files);
+    setQuickFiles(userData.quickAccessFiles);
   };
 
   useEffect(() => {
+    if (!user) return;
     getFiles();
-  }, []);
+    getQuickAccessFiles();
+  }, [user]);
+  useEffect(() => {
+    if (!user) return;
+    getFiles();
+    getQuickAccessFiles();
+  }, [userData]);
 
   return (
     <div className="home">
-      <Sidebar getFiles={getFiles} />
       <div className="home__container">
-        <Navbar />
-
-        <QuickAcces />
-
+        {quickFiles && (
+          <QuickAcces
+            quickFiles={quickFiles}
+            handleSelectedFile={handleSelectedFile}
+          />
+        )}
         <div className="recent-activity-container">
-          <Recent files={files} />
+          <Recent files={files} getQuickAccessFiles={getQuickAccessFiles} />
           <Activity />
         </div>
       </div>
+      <DocResultInfo
+        handleDocInfoClose={handleDocInfoClose}
+        file={selectedFile}
+        openDocInfo={openDocInfo}
+        setOpenDocInfo={setOpenDocInfo}
+      />
     </div>
   );
 }
