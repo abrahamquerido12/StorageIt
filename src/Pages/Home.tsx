@@ -52,15 +52,13 @@ export default function Home() {
   return (
     <div className="home">
       <div className="home__container">
-        {quickFiles && (
-          <QuickAcces
-            quickFiles={quickFiles}
-            handleSelectedFile={handleSelectedFile}
-          />
-        )}
+        <QuickAcces
+          quickFiles={quickFiles}
+          handleSelectedFile={handleSelectedFile}
+        />
         <div className="recent-activity-container">
           <Recent files={files} getQuickAccessFiles={getQuickAccessFiles} />
-          <Activity />
+          {/* <Activity /> */}
         </div>
       </div>
       <DocResultInfo

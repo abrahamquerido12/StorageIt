@@ -148,7 +148,7 @@ export default function Login(props) {
             <a href="">¿No tienes cuenta? Regístrate</a>
           </Link>
 
-          <a href="">Recuperar contraseña</a>
+          {/* <a href="">Recuperar contraseña</a> */}
         </form>
       </CustomCard>
       {error && <Alert severity="error">{error}</Alert>}

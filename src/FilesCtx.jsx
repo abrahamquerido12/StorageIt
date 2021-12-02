@@ -28,7 +28,7 @@ export default function FilesProvider({ children }) {
           }
           break;
         case 2:
-          if (doc.data().userLevel < 2) {
+          if (doc.data().userLevel < 2 || doc.data().userId === user.uid) {
             filesArr.push({
               uid: doc.id,
               ...doc.data(),

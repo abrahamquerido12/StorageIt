@@ -8,12 +8,16 @@ export default function QuickAcces({ quickFiles, handleSelectedFile }) {
     <div className="quick-access">
       <h2>Acceso Rápido</h2>
       <div className="quick-access__docs-container">
-        {quickFiles.map((quickFile) => (
-          <DocCard
-            handleSelectedFile={handleSelectedFile}
-            file={files.filter((file) => file.uid === quickFile)}
-          />
-        ))}
+        {quickFiles || quickFiles?.length >= 1 ? (
+          quickFiles.map((quickFile) => (
+            <DocCard
+              handleSelectedFile={handleSelectedFile}
+              file={files.filter((file) => file.uid === quickFile)}
+            />
+          ))
+        ) : (
+          <h3>No hay archivos de acceso rápido</h3>
+        )}
       </div>
     </div>
   );

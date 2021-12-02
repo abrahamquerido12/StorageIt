@@ -90,9 +90,11 @@ export const helperFunctions = {
   SaveFileData: async (snapshot, userId, userName, userLastname, userLevel) => {
     return await getDownloadURL(snapshot.ref).then(async (downloadURL) => {
       // console.log("File available at", downloadURL);
-      const { name, size, timeCreated, updated, fileType } = snapshot.metadata;
+      const { name, size, timeCreated, updated, fileType, fullPath } =
+        snapshot.metadata;
       const res = await addDoc(collection(db, `files`), {
         path: downloadURL,
+        fullPath: fullPath,
         name,
         size,
         fileType,
