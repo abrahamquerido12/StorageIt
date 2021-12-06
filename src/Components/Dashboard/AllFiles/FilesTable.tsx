@@ -8,6 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import File from "./File";
+import Analyze from "../Analyze/Analyze";
 function createData(
   name: string,
   createdAt: string,
@@ -18,6 +19,20 @@ function createData(
 }
 
 export default function FilesTable({ files, user, archived }) {
+  const [openAnalyze, setOpenAnalyze] = React.useState(false);
+  const handleOpenAnalyze = () => setOpenAnalyze(true);
+  const handleCloseAnalyze = () => {
+    setDocTo(null);
+    setOpenAnalyze(false);
+  };
+  const [docToAnalyze, setDocTo] = React.useState<any>(null);
+
+  const setDocToAnalyze = (file) => {
+    console.log("clicked: ", { docToAnalyze, openAnalyze });
+    setDocTo(file);
+    setOpenAnalyze(true);
+  };
+
   return (
     <div className="recent">
       <div className="recet__table">
@@ -37,12 +52,23 @@ export default function FilesTable({ files, user, archived }) {
                 files
                   .filter((file) => (archived ? file.archived : !file.archived))
                   .map((file) => (
-                    <File archived={archived} file={file} user={user} />
+                    <File
+                      setDocToAnalyze={setDocToAnalyze}
+                      archived={archived}
+                      file={file}
+                      user={user}
+                    />
                   ))}
             </TableBody>
           </Table>
         </TableContainer>
       </div>
+      <Analyze
+        docToAnalyze={docToAnalyze}
+        openAnalyze={openAnalyze}
+        handleCloseAnalyze={handleCloseAnalyze}
+        handleOpenAnalyze={handleOpenAnalyze}
+      />
     </div>
   );
 }

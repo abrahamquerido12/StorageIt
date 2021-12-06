@@ -27,6 +27,18 @@ const readText = async (destFilename) =>
     return data;
   });
 
+function countRepeatedWords(sentence) {
+  let words = sentence.split(" ");
+  let wordMap = {};
+
+  for (let i = 0; i < words.length; i++) {
+    let currentWordCount = wordMap[words[i]];
+    let count = currentWordCount ? currentWordCount : 0;
+    wordMap[words[i]] = count + 1;
+  }
+  return wordMap;
+}
+
 app.post("/", async (req, res) => {
   try {
     const { text } = req.body;
@@ -64,6 +76,36 @@ app.post("/", async (req, res) => {
   } catch (e) {
     console.log(e);
     res.status(500).json({ message: "error", e });
+  }
+});
+
+app.get("/analizar/:fileId", async (req, res) => {
+  try {
+    const { fileId } = req.params;
+
+    const file = await firebase
+      .firestore()
+      .collection("files")
+      .doc(fileId)
+      .get()
+      .then((doc) => doc.data())
+      .catch((e) => console.log(e));
+
+    const { name, fullPath } = file;
+
+    let destFilename = `./files/${file.name}`;
+
+    const options = {
+      destination: destFilename,
+    };
+
+    await downloadFile(fullPath, options);
+    const textInFile = await readText(destFilename);
+    const wordCount = countRepeatedWords(textInFile);
+
+    res.status(201).json(wordCount);
+  } catch (e) {
+    console.log(e);
   }
 });
 

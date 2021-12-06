@@ -17,7 +17,11 @@ function createData(
   return { name, createdAt, lastModify, size };
 }
 
-export default function Recent({ files, getQuickAccessFiles }) {
+export default function Recent({
+  files,
+  getQuickAccessFiles,
+  setDocToAnalyze,
+}) {
   return (
     <div className="recent">
       <h2>Recientes</h2>
@@ -36,7 +40,11 @@ export default function Recent({ files, getQuickAccessFiles }) {
             <TableBody>
               {files &&
                 files.map((file) => (
-                  <File getQuickAccessFiles={getQuickAccessFiles} file={file} />
+                  <File
+                    setDocToAnalyze={setDocToAnalyze}
+                    getQuickAccessFiles={getQuickAccessFiles}
+                    file={file}
+                  />
                 ))}
             </TableBody>
           </Table>

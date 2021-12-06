@@ -17,7 +17,9 @@ import { doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 import { helperFunctions } from "../../../Utils/helpers";
 import { FilesContext } from "../../../FilesCtx";
 
-export default function File({ file, user, archived }) {
+import BarChartIcon from "@mui/icons-material/BarChart";
+
+export default function File({ file, user, archived, setDocToAnalyze }) {
   const { files, getFiles } = useContext(FilesContext);
 
   const bytesToMegaBytes = (bytes) => bytes / (1024 * 1024);
@@ -115,6 +117,18 @@ export default function File({ file, user, archived }) {
             >
               Descargar
             </a>
+          </MenuItem>
+        )}
+        {file.fileType === "txt" && (
+          <MenuItem
+            onClick={() => {
+              setDocToAnalyze(file);
+              handleClose();
+            }}
+            disableRipple
+          >
+            <BarChartIcon />
+            Analizar
           </MenuItem>
         )}
         <MenuItem onClick={setAsQuickAccess} disableRipple>

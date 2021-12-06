@@ -14,7 +14,10 @@ import { db } from "../../../firebase.config";
 import { AuthContext } from "../../../AuthCtx";
 import { doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore";
 
-export default function File({ file, getQuickAccessFiles }) {
+import BarChartIcon from "@mui/icons-material/BarChart";
+import axios from "axios";
+
+export default function File({ file, getQuickAccessFiles, setDocToAnalyze }) {
   const { user, getData } = React.useContext(AuthContext);
   const bytesToMegaBytes = (bytes) => bytes / (1024 * 1024);
 
@@ -47,6 +50,29 @@ export default function File({ file, getQuickAccessFiles }) {
     getData(user.uid);
     handleClose();
     // getQuickAccessFiles();
+  };
+
+  const getValues = (words) => {
+    const wordArr = [];
+    for (const key in words) {
+      wordArr.push({ word: key, count: words[key] });
+    }
+    return wordArr;
+  };
+
+  const [data, setData] = React.useState([]);
+  const [words, setWords] = React.useState({});
+
+  const chartData = getValues(words);
+
+  const getWordCount = async () => {
+    console.log("getting word count");
+    const res = await axios.get(`http://localhost:3000/analizar/${file.uid}`);
+
+    if (!res.data) return;
+    const chartData = getValues(res.data);
+
+    setData([...chartData]);
   };
 
   return (
@@ -83,6 +109,19 @@ export default function File({ file, getQuickAccessFiles }) {
             Descargar
           </a>
         </MenuItem>
+        {file.fileType === "txt" && (
+          <MenuItem onClick={handleClose} disableRipple>
+            <BarChartIcon />
+            <a
+              style={{ textDecoration: "none", color: "black" }}
+              onClick={() => setDocToAnalyze(file)}
+              target="_blank"
+              rel="noreferrer"
+            >
+              Analizar
+            </a>
+          </MenuItem>
+        )}
         <MenuItem onClick={setAsQuickAccess} disableRipple>
           <PushPinIcon />
           Anclar a acceso rápido
